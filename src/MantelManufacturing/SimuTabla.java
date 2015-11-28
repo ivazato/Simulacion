@@ -1,5 +1,5 @@
 
-package SistemaDistribuido;
+package MantelManufacturing;
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -310,7 +310,7 @@ public class SimuTabla extends javax.swing.JFrame {
             }
             md.addRow(celda);
         } 
-        llenarTextFields();
+        llenarTextFieldsRamin();
     }//GEN-LAST:event_botonIniciarActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -369,7 +369,7 @@ public class SimuTabla extends javax.swing.JFrame {
         return max;
     }
     
-    public void llenarTextFields(){        
+    public void llenarTextFieldsRamin(){        
         String cadena1 = String.valueOf(calcularPromedio(obtenerColumna(14))); //De double a String
         jTextField1.setText(cadena1);
         
