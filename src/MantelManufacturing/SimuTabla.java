@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
  * @author Ivan Zapata
  */
 public class SimuTabla extends javax.swing.JFrame {
@@ -14,8 +13,9 @@ public class SimuTabla extends javax.swing.JFrame {
     DefaultTableModel md;
     String data[][] = {};
     //String cabeza1[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
-    String cabeza[] = {"NºT", "NºA", "T.E.Arribos", "T.Arribo","T.I.Serv", "NºA.", "T.Serv.", "T.F.Serv", "T.Ocio", "T.I.Serv", "NºA.", "T.Serv.", "T.F.Serv", "T.Ocio", "T.Esp"};
     
+    String cabeza[] = {"Día",	"Stock I.", "V.Aleat.",	"Demanda", "Producción", "Stock F.", "Nº Tandas", "Fuera Stocks"};   
+        
     Double max7;
     Double max12;
     
@@ -122,195 +122,69 @@ public class SimuTabla extends javax.swing.JFrame {
             Double[] celda = new Double[md.getColumnCount()]; //obtener el nro de columnas: 15 columnas
             for(int j = 0; j< md.getColumnCount(); j++){
                 
-                max7 = maximoRango(obtenerRangoMenosUno(7));
-                max12 = maximoRango(obtenerRangoMenosUno(12));
-                
-                // NºT
+                // COLUMNA 0: Día
                 if(j == 0){
                     celda[j] = new Double(i);                    
-                }                
+                } 
+                
                 else{
                     celda[j] = new Double(0);
                 }
                 
-                // NºA.
-                if(j == 1){ // Llenando la columna NºA
+                // COLUMNA 1: Stock I.
+                //double celda99_8 = (Double)md.getValueAt(99, 8);  >>>>ESTO FUNCIONABA EN EL PROYECTO ANTERIOR, ENTONCES PORQUE NO FUNCIONA LA LINEA 138 ?
                 
-                        celda[j] = Math.random();
+                if(j == 1){
+                    //celda[j] = (Double)md.getValueAt(i-1, j+4);
                 }
-                
-                // T.E.Arribos
+
+                // COLUMNA 2: V.Aleat.
                 if(j == 2){
-                    if(celda[j-1] > 0 && celda[j-1] < 0.3)
-                        celda[j] = 1.0;                  
-                    if(celda[j-1] >= 0.3 && celda[j-1] < 0.6)
-                        celda[j] = 2.0;
-                    if(celda[j-1] >= 0.6 && celda[j-1] < 0.8)
-                        celda[j] = 3.0;                    
-                    if(celda[j-1] >= 0.8 && celda[j-1] <= 1.0)
-                        celda[j] = 4.0;
+                
+                        celda[j] = Math.random();
                 }
                 
-                // T.Arribo
-                Double valorAnteriorTA;
-                if(j == 3){ // Columna
-                    if(i == 0){ // Fila
-                        valorAnteriorTA = 0.0;
-                    }
-                    else{
-                        valorAnteriorTA = (Double) md.getValueAt(i-1, j);
-                        //System.out.println("valorAnteriorTA = " + valorAnteriorTA);
-                        //System.out.println("Fila Nº " + md.getRowCount());
-                        //System.out.println("COLUMNA Nº " + md.getColumnCount());
-                        //System.out.println("celda[j-1] = " + celda[j-1]);                        
-                    }                    
-                    celda[j] = valorAnteriorTA + celda[j-1];
-                }
+                // COLUMNA 3: Demanda
                 
-                /**
-                 * SERVIDOR A
-                 */
-                // T.I.Serv.
+                if(j == 3){
+                    if(celda[j-1] > 0 && celda[j-1] < 0.17)
+                        celda[j] = 80.0;                  
+                    if(celda[j-1] >= 0.17 && celda[j-1] < 0.33)
+                        celda[j] = 90.0;
+                    if(celda[j-1] >= 0.33 && celda[j-1] < 0.50)
+                        celda[j] = 100.0;                    
+                    if(celda[j-1] >= 0.50 && celda[j-1] <= 0.67)
+                        celda[j] = 110.0;
+                    if(celda[j-1] >= 0.67 && celda[j-1] <= 0.83)
+                        celda[j] = 120.0;
+                    if(celda[j-1] >= 0.83 && celda[j-1] <= 1.0)
+                        celda[j] = 130.0;
+                }
+ 
+                // COLUMNA 3: Producción
                 if(j == 4){
-                    /*ArrayList<Double> pruebaArray = new ArrayList<Double>();
-                    pruebaArray = obtenerRangoMenosUno(7);
-                    for(int index = 0; index <= pruebaArray.size()-1; index++){
-                        //System.out.println("Fila " + i +" = ");                    
-                    }*/                    
+                  
                     
-                    System.out.println(i + " " + "max7 = " + max7);
-                    if(max7 <= celda[j-1]){
-                        celda[j] = celda[j-1];
+                    //System.out.println(i + " " + "max7 = " + max7);
+                    if(celda[j-3] < 10){
+                        celda[j] = 100.0 + celda[j-3];
                     }
                     else{
-                        if(max7 <= max12){
-                            celda[j] = max7;
-                        }
-                        else{
-                            celda[j] = 0.0;
-                        }
+                            celda[j] = 100.0;
                     }
                 }
                 
-                // NºA.
+                
+                //COLUMNA 5: Stock F.
                 if(j == 5){
-                    if(celda[j-1] == 0){
-                        celda[j] = 0.0;
-                    }
-                    else{
-                        celda[j] = Math.random();
-                    }
+                    celda[j] = maximo(0.0, celda[j-4] + celda[j-1] - celda[j-2]);
                 }
-                
-                // T.Serv.
-                if(j == 6){
-                    if(celda[j-1] == 0){
-                        celda[j] = 0.0;
-                    }
-                    else{
-                        if(celda[j-1] > 0 && celda[j-1] < 0.25)
-                        celda[j] = 2.0;                  
-                    if(celda[j-1] >= 0.25 && celda[j-1] < 0.5)
-                        celda[j] = 3.0;
-                    if(celda[j-1] >= 0.5 && celda[j-1] < 0.7)
-                        celda[j] = 4.0;                    
-                    if(celda[j-1] >= 0.7 && celda[j-1] <= 1.0)
-                        celda[j] = 5.0;
-                    }
-                }
-                
-                // T.F.Serv. 
-                if(j == 7){
-                    celda[j] = celda[j-3] + celda[j-1];
-                }
-                
-                // T.Ocio
-                Double valorAnteriorTO_A;
-                if(j == 8){
-                    
-                    if(i == 0){ // Fila
-                        valorAnteriorTO_A = 0.0;
-                    }
-                    else{
-                        valorAnteriorTO_A = (Double) md.getValueAt(i-1, j); 
-                        if(celda[j-4] == 0){
-                            celda[j] = valorAnteriorTO_A;
-                        }
-                        else{
-                            celda[j] = valorAnteriorTO_A + (celda[j-4] - max7);
-                        }
-                    }
-                }
-                
-                /**
-                 * SERVIDOR B
-                 */
-                // T.I.Serv.
-                if(j == 9){
-                    if(celda[j-5] > 0){
-                        celda[j] = 0.0;
-                    }
-                    else{
-                        celda[j] = maximo(celda[j-6],max12);
-                    }
-                }
-                
-                // NºA.
-                if(j == 10){
-                    if(celda[j-1] == 0){
-                        celda[j] = 0.0;
-                    }
-                    else{
-                        celda[j] = Math.random();
-                    }
-                }
-                
-                // T.Serv.
-                if(j == 11){
-                    if(celda[j-1] == 0){
-                        celda[j] = 0.0;
-                    }
-                    else{
-                        if(celda[j-1] > 0 && celda[j-1] < 0.25)
-                        celda[j] = 2.0;                  
-                    if(celda[j-1] >= 0.25 && celda[j-1] < 0.5)
-                        celda[j] = 3.0;
-                    if(celda[j-1] >= 0.5 && celda[j-1] < 0.7)
-                        celda[j] = 4.0;                    
-                    if(celda[j-1] >= 0.7 && celda[j-1] <= 1.0)
-                        celda[j] = 5.0;
-                    }
-                }
-                
-                // T.F.Serv. 
-                if(j == 12){
-                    celda[j] = celda[j-3] + celda[j-1];
-                }
-                
-                // T.Ocio
-                Double valorAnteriorTO_B;
-                if(j == 13){
-                    if(i == 0){ // Fila
-                        valorAnteriorTO_B = 0.0;
-                    }
-                    else{
-                        valorAnteriorTO_B = (Double) md.getValueAt(i-1, j); 
-                        if(celda[j-4] == 0){
-                            celda[j] = valorAnteriorTO_B;
-                        }
-                        else{
-                            celda[j] = valorAnteriorTO_B + (celda[j-4] - max12);
-                        }
-                    }
-                }
-                
-                if(j == 14){
-                    celda[j] = maximo(celda[j-5], celda[j-10]) - celda[j-11];
-                }
+               
+
             }
             md.addRow(celda);
         } 
-        llenarTextFieldsRamin();
+        //llenarTextFields();
     }//GEN-LAST:event_botonIniciarActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -368,8 +242,8 @@ public class SimuTabla extends javax.swing.JFrame {
             max = b;
         return max;
     }
-    
-    public void llenarTextFieldsRamin(){        
+    /*
+    public void llenarTextFields(){        
         String cadena1 = String.valueOf(calcularPromedio(obtenerColumna(14))); //De double a String
         jTextField1.setText(cadena1);
         
@@ -394,7 +268,7 @@ public class SimuTabla extends javax.swing.JFrame {
         String cadena3 = String.valueOf((maximo_7_12 - celda99_13)/maximo_7_12);
         jTextField3.setText(cadena3);
     }
-    
+    */
     public double calcularPromedio(ArrayList<Double> arreglo){
         double suma = 0;
         double prom = 0;
